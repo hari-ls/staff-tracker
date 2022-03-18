@@ -12,7 +12,7 @@ const selectAll = (table) => {
       query = `SELECT id, name FROM department`;
       break;
     case "role":
-      query = `SELECT role.id, title, department.name, salary FROM role LEFT JOIN department ON role.department_id = department.id`;
+      query = `SELECT role.id, title, department.name as department, salary FROM role LEFT JOIN department ON role.department_id = department.id`;
       break;
     case "employee":
       query = `SELECT e.id, e.first_name, e.last_name, role.title, department.name, role.salary, concat(m.first_name,' ',m.last_name) as manager FROM employee m RIGHT JOIN employee e ON m.id = e.manager_id LEFT JOIN role ON e.role_id = role.id LEFT JOIN department ON role.department_id = department.id`;
@@ -24,7 +24,6 @@ const selectAll = (table) => {
   db.query(sql, (err, data) => {
     if (err) {
       console.log(err);
-      id;
     }
     console.table(data);
   });
@@ -115,10 +114,9 @@ const getManagers = () => {
     return managers;
   });
 };
-// update an employee role
-// update employee managers
-const updateEmp = (id, param, value) => {
-  const sql = `UPDATE employee SET ${param}_id = ${value} WHERE id = ${id}`;
+// update an employee role, update employee managers
+const updateEmp = (id, param, key) => {
+  const sql = `UPDATE employee SET ${param}_id = ${key} WHERE id = ${id}`;
   db.query(sql, (err, data) => {
     if (err) {
       console.log(err);
@@ -157,8 +155,35 @@ const getDeptBudget = (deptId) => {
       console.log(err);
     }
     const [obj] = data;
-    // console.log(obj.Total);
     return obj.total;
+  });
+};
+// get id
+const getId = (table, value) => {
+  let query, match;
+  switch (table) {
+    case "department":
+      match = value;
+      query = `SELECT id FROM department WHERE name = "${match}"`;
+      break;
+    case "role":
+      match = value;
+      query = `SELECT id FROM role WHERE title = "${match}"`;
+      break;
+    case "employee":
+      match = value.split(" ");
+      query = `SELECT id FROM employee WHERE first_name = "${match[0]}" AND last_name = "${match[1]}"`;
+      break;
+    default:
+      console.log("Invalid type");
+  }
+  const sql = query;
+  db.query(sql, (err, data) => {
+    if (err) {
+      console.log(err);
+    }
+    const [obj] = data;
+    return obj.id;
   });
 };
 
@@ -173,4 +198,5 @@ module.exports = {
   getEmpBy,
   updateEmp,
   getDeptBudget,
+  getId,
 };

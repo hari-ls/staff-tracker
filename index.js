@@ -12,6 +12,7 @@ const {
   getEmpBy,
   updateEmp,
   getDeptBudget,
+  getId,
 } = require("./utils/queries");
 
 // console.log(
@@ -41,9 +42,9 @@ const {
 
 // console.log(gradient("cyan", "pink")("Hello world!"));
 
-selectAll("department");
-selectAll("role");
-selectAll("employee");
+// selectAll("department");
+// selectAll("role");
+// selectAll("employee");
 
 // insertInto("department", { name: "Demo" });
 // insertInto("employee", {
@@ -64,3 +65,33 @@ selectAll("employee");
 // getEmpBy("department", 1);
 // getEmpBy("manager", 2);
 // updateEmp(5, "manager", 2);
+// getId("employee", "John Doe");
+// getId("department", "Marketing");
+// getId("role", "Business Development Manager");
+
+const choices = [
+  {
+    type: "list",
+    name: "selection",
+    message: "What would you like to do?",
+    choices: [
+      "View All Departments",
+      "View All Roles",
+      "View All Employees",
+      "Add a Department",
+      "Add a Role",
+      "Add an Employee",
+      "Update an Employee Role",
+      "Update an Employee Manager",
+      "View Employees by Manager",
+      "Delete a Department",
+      "Delete a Role",
+      "Delete an Employee",
+      "View Department Budget",
+    ],
+  },
+];
+
+inquirer.prompt(choices).then((input) => {
+  console.log(input);
+});
