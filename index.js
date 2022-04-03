@@ -30,7 +30,7 @@ const choices = [
     ],
   },
 ];
-// Start
+// Start sequence
 const start = () => {
   figlet.text("Staff Tracker", function (err, data) {
     if (err) {
@@ -47,7 +47,7 @@ const start = () => {
     });
   });
 };
-// End
+// End sequence
 const end = () => {
   figlet.text("Thank you!", function (err, data) {
     if (err) {
@@ -60,7 +60,7 @@ const end = () => {
   db.end();
   process.exit(0);
 };
-
+// Selection prompts
 const ask = () => {
   inquirer.prompt(choices).then((input) => {
     switch (input.selection) {
@@ -111,7 +111,7 @@ const ask = () => {
     }
   });
 };
-
+// View all departments
 const viewAllDepartments = () => {
   db.query(
     `SELECT id, name FROM department ORDER BY name ASC`,
@@ -124,7 +124,7 @@ const viewAllDepartments = () => {
     }
   );
 };
-
+// View all roles
 const viewAllRoles = () => {
   db.query(
     `SELECT role.id, title, department.name as department, salary FROM role LEFT JOIN department ON role.department_id = department.id`,
@@ -137,7 +137,7 @@ const viewAllRoles = () => {
     }
   );
 };
-
+// View all employees
 const viewAllEmployees = () => {
   db.query(
     `SELECT e.id, e.first_name, e.last_name, role.title, department.name as department, role.salary, concat(m.first_name,' ',m.last_name) as manager FROM employee m RIGHT JOIN employee e ON m.id = e.manager_id LEFT JOIN role ON e.role_id = role.id LEFT JOIN department ON role.department_id = department.id`,
@@ -150,7 +150,7 @@ const viewAllEmployees = () => {
     }
   );
 };
-
+// Add a new department
 const addDepartment = () => {
   inquirer
     .prompt([
@@ -174,7 +174,7 @@ const addDepartment = () => {
       );
     });
 };
-
+// Add a new role
 const addRole = () => {
   db.query(`SELECT name as department FROM department`, (err, results) => {
     if (err) {
@@ -217,7 +217,7 @@ const addRole = () => {
       });
   });
 };
-
+// Add a new employee
 const addEmployee = () => {
   db.query(`SELECT title as role FROM role`, (err, results) => {
     if (err) {
@@ -290,7 +290,7 @@ const addEmployee = () => {
     );
   });
 };
-
+// Update existing employee role
 const updateEmployeeRole = () => {
   db.query(
     `SELECT concat(first_name,' ',last_name) as employee FROM employee`,
@@ -348,7 +348,7 @@ const updateEmployeeRole = () => {
     }
   );
 };
-
+// Update existing employee manager
 const updateEmployeeManager = () => {
   db.query(
     `SELECT concat(first_name,' ',last_name) as employee FROM employee`,
@@ -419,7 +419,7 @@ const updateEmployeeManager = () => {
     }
   );
 };
-
+// List employees by manager
 const viewEmployeesByManager = () => {
   db.query(
     `SELECT DISTINCT concat(m.first_name,' ',m.last_name) as manager FROM employee e INNER JOIN employee m ON m.id = e.manager_id`,
@@ -458,7 +458,7 @@ const viewEmployeesByManager = () => {
     }
   );
 };
-
+// View employees by department
 const viewEmployeesByDepartment = () => {
   db.query(`SELECT name as department FROM department`, (err, results) => {
     if (err) {
@@ -492,7 +492,7 @@ const viewEmployeesByDepartment = () => {
       });
   });
 };
-
+// Delete selected departments
 const deleteDepartments = () => {
   db.query(`SELECT name as department FROM department`, (err, results) => {
     if (err) {
@@ -527,7 +527,7 @@ const deleteDepartments = () => {
       });
   });
 };
-
+// Delete selected roles
 const deleteRoles = () => {
   db.query(`SELECT title as role FROM role`, (err, results) => {
     if (err) {
@@ -562,7 +562,7 @@ const deleteRoles = () => {
       });
   });
 };
-
+// Delete seletected employees
 const deleteEmployees = () => {
   db.query(
     `SELECT concat(first_name,' ',last_name) as employee FROM employee`,
@@ -600,7 +600,7 @@ const deleteEmployees = () => {
     }
   );
 };
-
+// View total utlilised budget for a department
 const viewDepartmentBudget = () => {
   db.query(`SELECT name as department FROM department`, (err, results) => {
     if (err) {
@@ -638,8 +638,5 @@ const viewDepartmentBudget = () => {
   });
 };
 
-const init = () => {
-  start();
-};
-
-init();
+// Initialise
+start();
