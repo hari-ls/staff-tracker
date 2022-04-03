@@ -546,7 +546,6 @@ const deleteRoles = () => {
         },
       ])
       .then((response) => {
-        console.log(response);
         let noOfRows = response.selectedRoles.map((i) => `?`);
         let queryParams = noOfRows.join(", ");
         db.query(
@@ -630,7 +629,7 @@ const viewDepartmentBudget = () => {
             }
             const [obj] = data;
             console.log(
-              `Total utlised budget for ${response.department} is ${obj.total}`
+              `Total utlised budget for ${response.department} is ${obj.total}\n`
             );
             ask();
           }
