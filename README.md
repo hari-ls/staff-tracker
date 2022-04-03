@@ -41,7 +41,7 @@ Please refer to the demo below:
 
 [Video Walkthrough](https://www.loom.com/share/9358eda797f941aaa3f772cbad30bca6)
 
-![Screenrecording of the web application](./assets/images/screenshot.png)
+![Screenshot of the web application](./assets/images/screenshot.png)
 
 ## License
 
